@@ -3,6 +3,7 @@ package br.com.tntnp
 import Constants
 import br.com.tntnp.data.*
 import br.com.tntnp.file.*
+import br.com.tntnp.utils.FileUtils
 import br.com.tntnp.utils.GUIDUtils
 import br.com.tntnp.utils.XMLUtils
 import java.io.File
@@ -10,10 +11,17 @@ import java.io.File
 class GenerateFiles(private val rootFolder: File) {
 
     private lateinit var clothesWithUUID: ArrayList<Pair<File, String>>
+    private lateinit var mediaFolder: File
 
     fun generateFiles(): Boolean {
+        mediaFolder = FileUtils.getMediaDirectory(rootFolder)
+
         if (readClothes().not()) {
             println("Impossible to read the clothes folder!")
+            return false
+        }
+        if (createReadMeFile().not()) {
+            println("Impossible to create ${Constants.README_FILE}!")
             return false
         }
         if (createGuidTableFile().not()) {
@@ -44,11 +52,11 @@ class GenerateFiles(private val rootFolder: File) {
     }
 
     private fun readClothes(): Boolean {
-        ClothesItemsFolder(rootFolder).folder?.let { clothesFolder ->
+        ClothesItemsFolder(mediaFolder).folder?.let { clothesFolder ->
             clothesFolder.listFiles()?.let {
                 clothesWithUUID = generateUUIDs(it)
             } ?: run {
-                println("Add your clothes textures to the folder: ${rootFolder.absolutePath}")
+                println("Add your clothes textures to the folder: ${mediaFolder.absolutePath}")
                 return false
             }
         }
@@ -66,8 +74,21 @@ class GenerateFiles(private val rootFolder: File) {
         return result
     }
 
+    private fun createReadMeFile(): Boolean {
+        ReadMeFile(rootFolder).run {
+            file?.let { readMeFile ->
+                var readMeFileContent = getReadMeHeader()
+                for (cloth in clothesWithUUID) {
+                    readMeFileContent += getReadMeShirtSection(cloth.first.nameWithoutExtension)
+                }
+                readMeFile.writeText(readMeFileContent)
+            } ?: return false
+        }
+        return true
+    }
+
     private fun createGuidTableFile(): Boolean {
-        GuidTableFile(rootFolder).run {
+        GuidTableFile(mediaFolder).run {
             file?.let { guidTableFile ->
                 val xmlMapper = XMLUtils.getXmlMapper()
                 val guidTable: GuidTable = xmlMapper.readValue(resourceFile, GuidTable::class.java)
@@ -88,7 +109,7 @@ class GenerateFiles(private val rootFolder: File) {
     }
 
     private fun createClothingXml(): Boolean {
-        ClothingFile(rootFolder).run {
+        ClothingFile(mediaFolder).run {
             file?.let { clothingFile ->
                 val xmlMapper = XMLUtils.getXmlMapper()
                 val clothing: Clothing = xmlMapper.readValue(resourceFile, Clothing::class.java)
@@ -116,7 +137,7 @@ class GenerateFiles(private val rootFolder: File) {
 
     private fun createClothingItemsXml(): Boolean {
         for (cloth in clothesWithUUID) {
-            ClothesItemsFile(rootFolder, cloth.first).run {
+            ClothesItemsFile(mediaFolder, cloth.first).run {
                 file?.let { clothingItemsFile ->
                     val xmlMapper = XMLUtils.getXmlMapper()
                     val clothingItem: ClothingItem = xmlMapper.readValue(resourceFile, ClothingItem::class.java)
@@ -136,7 +157,7 @@ class GenerateFiles(private val rootFolder: File) {
     }
 
     private fun createLuaFile(): Boolean {
-        LuaFile(rootFolder).run {
+        LuaFile(mediaFolder).run {
             file?.let { luaFile ->
                 var luaFileContent = getLuaFileHeader()
                 for (cloth in clothesWithUUID) {
@@ -149,7 +170,7 @@ class GenerateFiles(private val rootFolder: File) {
     }
 
     private fun createModelsFile(): Boolean {
-        ModelsFile(rootFolder).run {
+        ModelsFile(mediaFolder).run {
             file?.let { luaFile ->
                 var modelsFileContent = getModelFileHeader()
                 for (cloth in clothesWithUUID) {
@@ -163,7 +184,7 @@ class GenerateFiles(private val rootFolder: File) {
     }
 
     private fun createModelsClothingFile(): Boolean {
-        ModelsClothingFile(rootFolder).run {
+        ModelsClothingFile(mediaFolder).run {
             file?.let { luaFile ->
                 var modelsClothingFileContent = getModelsClothingFileHeader()
                 for (cloth in clothesWithUUID) {

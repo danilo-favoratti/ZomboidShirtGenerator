@@ -6,6 +6,8 @@ object Constants {
     const val GUID_TABLE_FILE = "fileGuidTable.xml"
     const val GUID_TABLE_PATH_PREFIX = "media/clothing/clothingItems/"
 
+    const val README_FILE = "README.md"
+
     const val TEXTURES_FOLDER = "textures"
 
     const val CLOTHES_FOLDER = "Clothes"

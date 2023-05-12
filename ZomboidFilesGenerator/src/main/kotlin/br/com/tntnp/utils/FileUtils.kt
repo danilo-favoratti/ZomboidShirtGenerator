@@ -5,15 +5,14 @@ import java.io.File
 
 object FileUtils {
 
+    fun getMediaDirectory(rootFolder: File) = rootFolder.resolve(Constants.FIRST_LEVEL_FOLDER).resolve(Constants.MEDIA_FOLDER)
+
     fun getRootDirectory(args: Array<String>) = File(getStringRootDirectory(args))
 
-    private fun getStringRootDirectory(args: Array<String>): String {
-        val ret = if (args.isEmpty()) {
-            Constants.MAIN_FOLDER_DEFAULT
-        } else {
-            args[0]
-        }
-        return ret.plus("${File.separator}${Constants.FIRST_LEVEL_FOLDER}${File.separator}${Constants.MEDIA_FOLDER}")
+    private fun getStringRootDirectory(args: Array<String>) = if (args.isEmpty()) {
+        Constants.MAIN_FOLDER_DEFAULT
+    } else {
+        args[0]
     }
 
     fun checkFolderOrCreate(folder: File): Boolean {

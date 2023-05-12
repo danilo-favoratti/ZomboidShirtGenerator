@@ -2,6 +2,7 @@ package br.com.tntnp.file
 
 import Constants
 import br.com.tntnp.utils.FileUtils
+import br.com.tntnp.utils.removePrefix
 import java.io.File
 
 class ModelsFile(rootFolder: File) {
@@ -48,8 +49,4 @@ class ModelsFile(rootFolder: File) {
     """.trimIndent()
 
     fun getModelsFooter() = "}"
-
-    private fun String.getTeamName() = this.removePrefix().replace("_", "")
-
-    private fun String.removePrefix() = this.replace("TShirt_", "")
 }

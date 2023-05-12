@@ -1,7 +1,7 @@
 package br.com.tntnp.file
 
 import Constants
-import br.com.tntnp.utils.FileUtils
+import br.com.tntnp.utils.*
 import java.io.File
 
 class ModelsClothingFile(rootFolder: File) {
@@ -39,7 +39,7 @@ class ModelsClothingFile(rootFolder: File) {
         {
             DisplayCategory      = Clothing,
             Type                 = Clothing,
-            DisplayName          = Camiseta do ${tshirtName.getTeamNameParentheses()},
+            DisplayName          = Camiseta do ${tshirtName.getTeamNameWithSpacesAndParentheses()},
             ClothingItem         = $tshirtName,
             BodyLocation         = Tshirt,
             Icon	             = TNTCamiseta${tshirtName.getTeamName()},
@@ -54,11 +54,5 @@ class ModelsClothingFile(rootFolder: File) {
     """.trimIndent()
 
     fun getModelsClothingFooter() = "}"
-
-    private fun String.getTeamNameParentheses() = this.removePrefix().replace("_Time", " (Time)")
-
-    private fun String.getTeamName() = this.removePrefix().replace("_", "")
-
-    private fun String.removePrefix() = this.replace("TShirt_", "")
 
 }

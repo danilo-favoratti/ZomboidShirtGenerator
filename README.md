@@ -12,5 +12,5 @@ It generates files for the project: https://github.com/mzaffar/ProjectZomboid-Ca
 
 *<main_folder>* example: C:\ProjectZomboid-CamisetaTimes
 
-``./gradlew run --args="C:\\ProjectZomboid-CamisetaTimes>"``
+``./gradlew run --args="C:\\ProjectZomboid-CamisetaTimes"``
                       

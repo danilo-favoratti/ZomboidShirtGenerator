@@ -26,15 +26,9 @@ class ModelsFile(rootFolder: File) {
 
     fun getModelFileHeader() = """
         module Base
-        {	
-	        model Shirt_Ground_TNT
-	        {
-		        mesh = WorldItems/Clothing/Shirt_Ground_TNT,
-                texture = Clothes/TNT/TShirt_SaoPaulo,
-                scale = 0.3000,
-	        }
+        {
         
-        
+                
     """.trimIndent()
 
     fun getModelShirtSection(tshirtName: String) = """

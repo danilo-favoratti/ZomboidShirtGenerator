@@ -13,10 +13,15 @@ fun String.getTeamName() = this.removePrefix().replace("_", "")
 private fun String.addSpaceBeforeUpperCaseLetters(): String {
     val stringBuilder = StringBuilder()
 
+    var lastCharUpperCase = false
     for (i in this.indices) {
-        if (this[i].isUpperCase() && i > 0) {
-            stringBuilder.append(" ")
-        }
+        lastCharUpperCase =
+                if (this[i].isUpperCase() && i > 0 && lastCharUpperCase.not()) {
+                    stringBuilder.append(" ")
+                    true
+                } else {
+                    false
+                }
         stringBuilder.append(this[i])
     }
 

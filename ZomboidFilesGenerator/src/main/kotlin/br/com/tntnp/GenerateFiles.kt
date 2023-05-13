@@ -16,7 +16,7 @@ class GenerateFiles(private val rootFolder: File) {
     fun generateFiles(): Boolean {
         mediaFolder = FileUtils.getMediaDirectory(rootFolder)
 
-        if (readClothes().not()) {
+        if (readClothesAlphabetically().not()) {
             println("Impossible to read the clothes folder!")
             return false
         }
@@ -51,10 +51,10 @@ class GenerateFiles(private val rootFolder: File) {
         return true
     }
 
-    private fun readClothes(): Boolean {
+    private fun readClothesAlphabetically(): Boolean {
         ClothesItemsFolder(mediaFolder).folder?.let { clothesFolder ->
-            clothesFolder.listFiles()?.let {
-                clothesWithUUID = generateUUIDs(it)
+            clothesFolder.listFiles()?.sorted()?.let {
+                clothesWithUUID = generateUUIDs(it.toTypedArray())
             } ?: run {
                 println("Add your clothes textures to the folder: ${mediaFolder.absolutePath}")
                 return false

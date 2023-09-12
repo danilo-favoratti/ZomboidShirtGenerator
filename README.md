@@ -2,6 +2,8 @@
 
 It generates files for the project: https://github.com/mzaffar/ProjectZomboid-CamisetaTimes
 
+![Zomboid example](https://github.com/mzaffar/ProjectZomboid-CamisetaTimes/blob/master/TNTCamisetasTimes/poster.png?raw=true)
+
 ### Build
 
 ``./gradlew install``
